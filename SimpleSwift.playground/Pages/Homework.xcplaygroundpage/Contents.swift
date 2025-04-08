@@ -27,11 +27,96 @@ print("Welcome to the UW Calculator Playground")
 //: For this latter set of operations, it is safe to assume that `["count"]` (with no additional arguments) is 0, `["avg"]` is also 0, and `["fact"]` is 0. `["1", "fact"]` should return 1, and `["0", "fact"]` should also return 1. (Yes, 0-factorial is 1. True story.)
 //: 
 func calculate(_ args: [String]) -> Int {
+    let argsSize = args.count
+    
+    if (args[argsSize - 1] == "count") {
+        if (argsSize == 1) {
+            return 0
+        }
+        var count = 0;
+        for _ in 1...(argsSize  - 1){
+            count = count + 1
+        }
+        return count
+        
+    } else if (args[argsSize - 1] == "avg") {
+        if (argsSize == 1) {
+            return 0;
+        }
+        
+        var count = 0;
+        var total = 0;
+        for index in 0...(argsSize - 2) {
+            count = count + 1
+            
+            let stringToIntVal : Int = Int(args[index]) ?? 0
+            total = total + stringToIntVal
+        }
+        return total/count
+        
+    } else if (args[argsSize - 1] == "fact") {
+        let num : Int = Int(args[0]) ?? 1
+        if (argsSize == 1) {
+            return 0;
+        } else if (num == 0) {
+            return 1
+        }
+        
+        var total = 1
+        var count = 0
+        for index in 1...num {
+            total = total * index
+        }
+        return total
+        
+    } else {
+        let firstNum : Int = Int(args[0]) ?? 0
+        let secondNum : Int = Int(args[2]) ?? 0
+        var operation = args[1]
+        
+        if (operation == "+") {
+            return firstNum + secondNum
+        } else if (operation == "-") {
+            return firstNum - secondNum
+        } else if (operation == "*") {
+            return firstNum * secondNum
+        } else if (operation == "/") {
+            return firstNum / secondNum
+        } else if (operation == "%") {
+            return firstNum % secondNum
+        }
+    }
     return -1
 }
 
+
 func calculate(_ arg: String) -> Int {
-    return -1
+    var updateString : String = String(arg)
+    let remove: Set<Character> = [" "]
+    updateString.removeAll(where: {remove.contains($0)} )
+    var arrayOfStrings : [String] = [];
+    print(updateString)
+    
+    
+    for _ in 1...updateString.count{
+        var tempChar = String(updateString.removeFirst())
+        if (tempChar == "c") {
+            arrayOfStrings.append("count")
+            return calculate(arrayOfStrings)
+        } else if (tempChar == "f") {
+            arrayOfStrings.append("fact")
+            return calculate(arrayOfStrings)
+        } else if (tempChar == "a") {
+            arrayOfStrings.append("avg")
+            return calculate(arrayOfStrings)
+        }
+        
+        
+        arrayOfStrings.append(tempChar)
+    }
+        
+        return calculate(arrayOfStrings)
+    
 }
 
 //: Below this are the test expressions/calls to verify if your code is correct.
